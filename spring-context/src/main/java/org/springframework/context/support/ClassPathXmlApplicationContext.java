@@ -148,7 +148,7 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 		// 2.解析配置文件的路径，例如：applicationContext-${user.name}.xml这种配置文件名称，并且保存到configLocations中，为下一步的解析bean定义做准备
 		setConfigLocations(configLocations);
 
-		// 3.如果需要刷新容器
+		// 3.如果需要刷新容器,默认true
 		if (refresh) {
 			// 执行刷新容器的操作
 			refresh();

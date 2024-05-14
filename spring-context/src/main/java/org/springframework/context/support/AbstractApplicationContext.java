@@ -525,9 +525,9 @@ public abstract class AbstractApplicationContext
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {
 			/**
-			 * 1.准备上下文的刷新工作，记录bean容器的启动时间，容器活跃状态
+			 * 1. 准备上下文的刷新工作，记录bean容器的启动时间，容器活跃状态
 			 *    验证系统中一些属性和属性值的设置等.
-			 *    使用LinkedHashSet初始化earlyApplicationListeners和earlyApplicationEvents
+			 *   使用LinkedHashSet初始化earlyApplicationListeners和earlyApplicationEvents
 			 */
 			prepareRefresh();
 			/**

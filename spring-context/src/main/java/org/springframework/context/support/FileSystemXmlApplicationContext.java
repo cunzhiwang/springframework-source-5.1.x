@@ -136,6 +136,7 @@ public class FileSystemXmlApplicationContext extends AbstractXmlApplicationConte
 			String[] configLocations, boolean refresh, @Nullable ApplicationContext parent)
 			throws BeansException {
 
+		// 动态地确定用哪个加载器去加载我们的配置文件
 		super(parent);
 		setConfigLocations(configLocations);
 		if (refresh) {
