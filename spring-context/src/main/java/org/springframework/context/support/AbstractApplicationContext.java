@@ -521,13 +521,24 @@ public abstract class AbstractApplicationContext
 		return this.applicationListeners;
 	}
 
+
+	/**
+	 * 容器初始化的过程：BeanDefinition 的 Resource 定位、BeanDefinition 的载入、BeanDefinition 的注册。
+	 * BeanDefinition 的载入和 bean 的依赖注入是两个独立的过程，依赖注入一般发生在 应用第一次通过
+	 * getBean() 方法从容器获取 bean 时。
+	 * <p>
+	 * 另外需要注意的是，IoC 容器有一个预实例化的配置（即，将 AbstractBeanDefinition 中的 lazyInit 属性
+	 * 设为 true），使用户可以对容器的初始化过程做一个微小的调控，lazyInit 设为 false 的 bean
+	 * 将在容器初始化时进行依赖注入，而不会等到 getBean() 方法调用时才进行
+	 */
 	@Override
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {
 			/**
-			 * 1. 准备上下文的刷新工作，记录bean容器的启动时间，容器活跃状态
+			 * 1. 准备上下文的刷新工作，记录bean容器的启动时间，容器活跃状态,同时设置同步标识
 			 *    验证系统中一些属性和属性值的设置等.
-			 *   使用LinkedHashSet初始化earlyApplicationListeners和earlyApplicationEvents
+			 *    使用LinkedHashSet初始化earlyApplicationListeners和earlyApplicationEvents
+			 *
 			 */
 			prepareRefresh();
 			/**
@@ -558,11 +569,7 @@ public abstract class AbstractApplicationContext
 				 * 比如在BeanFactory加载完所有的Bean定义之后，想要修改某个bean的定义信息，可以通过重写这个方法实现.
 				 * 比如：在xml中配置了<bean id="user"><property name="name" value="wb"></property></bean>
 				 * 如果想在不修改配置文件的情况下修改name的值，可以使用如下的方法：
-				 * class MyApplicationContext extends ClassPathXmlApplicationContext{
-						 public MyApplicationContext(String s){
-						 	super(s);
-						 }
-						 @Override
+				 *      @Override
 						 protected void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 							 BeanDefinition beanDefinition = beanFactory.getBeanDefinition("user");
 							 PropertyValue propertyValue=new PropertyValue("name", "www.so.com");
@@ -700,7 +707,7 @@ public abstract class AbstractApplicationContext
 		/**
 		 * 如果需要在验证系统属性之前，给系统中设置一些默认值。可以通过继承AbstractApplicationContext类，并重写该方法实现。
 		 * Spring留给开发人员的一个扩展点.
-		 *
+		 * <p>
 		 * 例如子类在方法中设置环境属性中必须需要的变量：getEnvironment().setRequiredProperties("myProp");
 		 */
 		initPropertySources();
